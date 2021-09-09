@@ -137,11 +137,11 @@ single_perps_raw <- single_perp_df %>%
 
 ```{r}
 #Lets look at age
-age_dist <- single_perps_raw #%>% 
- # group_by(age) %>% count() %>% 
- # mutate(age == case_when(
-  #  as.numeric(age) == FALSE  ~ 9999,
-  #  as.numeric(age) == TRUE ~ is.numeric(age)
- # ))
+age_dist <- single_perps_raw %>% 
+  group_by(age) %>% count() %>% 
+  mutate(age == case_when(
+    as.numeric(age) ==   ~ 9999,
+    as.numeric(age) == TRUE ~ is.numeric(age)
+  ))
 
 ```
