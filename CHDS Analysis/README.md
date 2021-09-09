@@ -3,6 +3,11 @@ Testing data from https://www.chds.us/ssdb/data-map/ to look at what factors imp
 
 Bit morbid...but might lead to some interesting convos
 
+##Key Findings
+
+1. Finding A
+2. Finding B 
+
 ## Description from the original data:
 
 Center for Homeland Defense and Security
