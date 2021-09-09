@@ -1,4 +1,4 @@
-# Welcome to my Modelling and EDA landing page!
+# Welcome to my Modelling and Exploratory Data Analysis landing page!
 
 ## What's it about
 
