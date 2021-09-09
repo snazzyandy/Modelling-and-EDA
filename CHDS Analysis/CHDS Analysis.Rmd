@@ -14,7 +14,7 @@ Today a friend of mine sent me an interesting website showing the distribution o
 
 Its a lot of data and it paints a pretty rough picture of the United States. 
 
-![Source: Center for Homeland Defense and Security (https://www.chds.us/ssdb/data-map/)](https://raw.githubusercontent.com/snazzyandy/tidy_tuesday/main/PCA/K-12%20Shooting%20Database%20Screenshot.png)
+![Source: Center for Homeland Defense and Security (https://www.chds.us/ssdb/data-map/)](https://raw.githubusercontent.com/snazzyandy/Modelling-and-EDA/main/CHDS%20Analysis/Figures/K-12%20Shooting%20Database%20Screenshot.png)
 
 So we got discussing that given the mountain of events what tends to be the most impactful factor in the size of casualties and the interplay between the individual factors.
 
@@ -23,10 +23,10 @@ My initial hypothesis is that age and access to weaponry will be the most impact
 
 ```{r dataload, include=FALSE}
 #Read the raw data i've pulled from the site 
-shooter <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/tidy_tuesday/main/PCA/Shooter%20Table.csv')
-incident <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/tidy_tuesday/main/PCA/Incident%20Table.csv')
-victim  <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/tidy_tuesday/main/PCA/Victim%20Table.csv')
-weapon  <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/tidy_tuesday/main/PCA/Weapon%20Table.csv')
+shooter <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/Modelling-and-EDA/main/CHDS%20Analysis/Data/Shooter%20Table.csv')
+incident <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/Modelling-and-EDA/main/CHDS%20Analysis/Data/Incident%20Table.csv')
+victim  <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/Modelling-and-EDA/main/CHDS%20Analysis/Data/Victim%20Table.csv')
+weapon  <- readr::read_csv('https://raw.githubusercontent.com/snazzyandy/Modelling-and-EDA/main/CHDS%20Analysis/Data/Weapon%20Table.csv')
 
 ```
 
