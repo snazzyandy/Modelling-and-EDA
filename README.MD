@@ -7,4 +7,4 @@ In this repo we will aim to do just that.
 
 ### Current Projects
 
-**CHDS:** Looking at school shooting data at K-12 Sites in the USA based on data from https://www.chds.us
+**CHDS:** Looking at school shooting data at K-12 Sites in the USA based on data from [Homeland Security](https://www.chds.us)
