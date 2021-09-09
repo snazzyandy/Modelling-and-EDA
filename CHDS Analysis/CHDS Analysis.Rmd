@@ -1,7 +1,7 @@
 ---
 title: "CHDS Analysis"
 author: Andrew Turner (https://github.com/snazzyandy)
-output: html_document
+output: github_document
 ---
 ```{r setup, echo=FALSE, warning=FALSE, message = FALSE}
 devtools::install_github("hadley/emo")
@@ -138,10 +138,5 @@ single_perps_raw <- single_perp_df %>%
 ```{r}
 #Lets look at age
 age_dist <- single_perps_raw %>% 
-  group_by(age) %>% count() %>% 
-  mutate(age == case_when(
-    as.numeric(age) ==   ~ 9999,
-    as.numeric(age) == TRUE ~ is.numeric(age)
-  ))
-
+  group_by(age) %>% count() 
 ```
