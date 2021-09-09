@@ -13,4 +13,4 @@ In this repo we will aim to do just that.
 
 ### Completed Projects
 
-FINISHED PROJECTS!!! Are you kidding :P 
+FINISHED PROJECTS!?! Are you kidding :P 
