@@ -2,7 +2,7 @@
 
 ## What's it about
 
-I mostly do pretty basic data science research projects at work meaning I dont get time to take a chainsaw to a teacup.
+I mostly do pretty basic data science research projects at work meaning I often miss the opportunity to take the chainsaw to a teacup.
 
 In this repo we will aim to do just that.
 
