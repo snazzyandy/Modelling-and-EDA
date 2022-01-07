@@ -1,0 +1,11 @@
+---
+title: "NBA Height analysis"
+output: html_document
+---
+
+Today my flatmate and I were watching the NBA and saw a huge dunk. I told my flatmate i totally could do that if i was that height (Im 5'7) and he said no way because my vertical height in jumps weren't as high as these guys.
+
+I'm not remotely athletic however i thought it would be interesting to look at the relationship between height and vertical jumps as these larger athletes don't need to jump as high a percentage of their overall height to dunk.
+
+In this doc im going to pull some height and vertical jumping stats as well as compare them to the height of a standard nba ring to determine the % of their overall height to deliver a dunk.
+
