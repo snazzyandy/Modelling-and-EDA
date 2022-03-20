@@ -2,10 +2,53 @@
 title: "NBA Height analysis"
 output: html_document
 ---
+## Purpose
 
 Today my flatmate and I were watching the NBA and saw a huge dunk. I told my flatmate i totally could do that if i was that height (Im 5'7) and he said no way because my vertical height in jumps weren't as high as these guys.
 
 I'm not remotely athletic however i thought it would be interesting to look at the relationship between height and vertical jumps as these larger athletes don't need to jump as high a percentage of their overall height to dunk.
 
 In this doc im going to pull some height and vertical jumping stats as well as compare them to the height of a standard nba ring to determine the % of their overall height to deliver a dunk.
+
+## Height data
+
+Lets pull some basic height data to work from. Justinas Cirtautas did a write up on kaggle last year on a similar topic,  You can read his analysis in the notebook here:
+<https://www.kaggle.com/justinas/nba-height-and-weight-analysis/notebook> 
+
+He's done a lot of heavy lifting here re: data scraping So lets thank him and  pull the base dataset from there.
+I was going to pull this data using the kaggle API but ran into issues with authenticating the API without putting my credentials into this script. Therefore I have excluded that part and used the static data from:
+
+https://www.kaggle.com/justinas/nba-height-and-weight-analysis/data?select=all_seasons.csv
+
+extracted as at 2022/01/07 (YYY/MM/DD)
+
+```{r, warning=FALSE}
+#Load libraries and Cirtuata's csv
+library(knitr)
+library(ggplot2)
+
+Kaggle_data <- read.csv("all_seasons.csv", stringsAsFactors = FALSE)
+
+```
+
+
+So lets have a quick look at what we've got
+
+```{r}
+head(Kaggle_data)
+
+summary(Kaggle_data)
+
+```
+
+Im also interested in how the distribution of this data changes over time, Likewise, does this mean that our model should include some kinda of lag of exclusion of timeseries.
+
+```{r}
+gg_height_density <- ggplot(Kaggle_data, aes(x=player_height))+
+  geom_density()+
+  ggtitle("NBA Player Height in cm")+
+  facet_wrap(~draft_year)
+
+gg_height_density
+```
 
