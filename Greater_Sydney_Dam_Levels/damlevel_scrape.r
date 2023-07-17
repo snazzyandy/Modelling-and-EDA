@@ -32,7 +32,7 @@ Dam_Name <- page %>%
 Sample_Level <- data.frame(Dam_Name) %>% 
     filter(Dam_Name %in% dams_of_interest) %>% 
     cbind(Dam_Level) %>% 
-    mutate(Data_Collection_Time_AEST = Sys.time()) %>% 
+    mutate(Data_Collection_Time_UTC = format(Sys.time(), tz="UTC")) %>%
     mutate(Collection_Date = Sys.Date())
 
 #Beep boop out goes data
