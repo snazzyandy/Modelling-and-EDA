@@ -36,7 +36,7 @@ Sample_Level <- data.frame(Dam_Name) %>%
     mutate(Collection_Date = Sys.Date())
 
 #Beep boop out goes data
-write.csv(Sample_Level, paste0("data/",Sys.Date(),"_GSDL.csv"), row.names = FALSE)
+write.csv(Sample_Level, paste0("data/",format(Sys.time(),  "%Y%m%d_%H%M%S_"),"_GSDL.csv"), row.names = FALSE)
 
 #Nom nom ingest the data
 filenames <- paste0("data/", list.files("data/"))
