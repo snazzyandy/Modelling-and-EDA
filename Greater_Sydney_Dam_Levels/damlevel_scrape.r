@@ -36,10 +36,10 @@ Sample_Level <- data.frame(Dam_Name) %>%
     mutate(Collection_Date = Sys.Date())
 
 #Beep boop out goes data
-write.csv(Sample_Level, paste0("data/",Sys.Date(),"_GSDL.csv"), row.names = FALSE)
+write.csv(Sample_Level, paste0("Greater_Sydney_Dam_Levels/data/",Sys.Date(),"_GSDL.csv"), row.names = FALSE)
 
 #Nom nom ingest the data
-filenames <- paste0("data/", list.files("data/"))
+filenames <- paste0("Greater_Sydney_Dam_Levels/data/", list.files("Greater_Sydney_Dam_Levels/data/"))
 
 list_data <- lapply(filenames, read.csv)
 
