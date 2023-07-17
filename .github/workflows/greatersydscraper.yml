@@ -2,7 +2,7 @@ name: damlevel_scrape.r
 # Controls when the action will run.
 on:
   schedule:
-    - cron:  '*/5 * * * *'
+    - cron:  '0 17 * * *'
  
 jobs: 
   autoscrape:
