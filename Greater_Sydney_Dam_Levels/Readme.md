@@ -10,4 +10,5 @@ All these daily data extracts are avaiable in the data folder.
 
 Open sourcing (MIT Licence) for those who are interested #OpenData!
 The data we are borrowing is from [this graphic](https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels)!
+[![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
 ![Image](Images/WNSWScreenshot.png)
