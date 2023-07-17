@@ -9,4 +9,4 @@ All these daily data extracts are avaiable in the data folder.
 Open sourcing (MIT Licence) for those who are interested in dam levels!
 The data we are borrowing is from this graphic!
 
-!https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels](Images/WNSWScreenshot.png)
+![https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels](Images/WNSWScreenshot.png)
