@@ -1,4 +1,5 @@
-library(tidyverse)
+library(dplyr)
+library(rvest)
 
 #Define the Site and the filter Criteria
 url <- "https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels"
