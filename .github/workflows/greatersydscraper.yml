@@ -19,7 +19,8 @@ jobs:
         R -e 'install.packages("rvest")'
     # Run R script
     - name: Dam level scraper
-      run: Rscript Greater_Sydney_Dam_Levels/damlevel_scrape.R
+      working-directory: Greater_Sydney_Dam_Levels
+      run: Rscript damlevel_scrape.R
       
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
