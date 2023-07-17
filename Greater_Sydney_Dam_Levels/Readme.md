@@ -1,3 +1,4 @@
+## Greater Sydney Dam Level Scraper
 A friend of mine mentioned that WaterNSW updated their website.
 However, like with most web facelifts, the websites's functionality took a hit.
 
@@ -7,6 +8,5 @@ Rather than him visiting the site each day and recording the data manually I wro
 All these daily data extracts are avaiable in the data folder.
 
 Open sourcing (MIT Licence) for those who are interested in dam levels!
-The data we are borrowing is from this graphic!
-
-![https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels](Images/WNSWScreenshot.png)
+The data we are borrowing is from [this graphic](https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels])!
+![Image](Images/WNSWScreenshot.png)
