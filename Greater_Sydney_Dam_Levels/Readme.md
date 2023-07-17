@@ -7,3 +7,5 @@ Rather than him visiting the site each day and recording the data manually I wro
 All these daily data extracts are avaiable in the data folder.
 
 Open sourcing (MIT Licence) for those who are interested in dam levels!
+
+![Image](Images/WNSWScreenshot.png)
