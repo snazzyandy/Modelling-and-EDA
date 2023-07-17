@@ -10,6 +10,7 @@ In this repo we will aim to do just that.
 
 **CHDS:** Looking at school shooting data at K-12 Sites in the USA based on data from [Center for Homeland Defence and Security](https://www.chds.us/ssdb/data-map/)
 
+**NBA Height-Dunk Analysis** Investigating the relationship between height and distance from completed shots in the NBA
 
 ### Completed Projects
 
