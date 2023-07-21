@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Dam level scraper
-        working-directory: Greater_Sydney_Dam_Levels
+        #working-directory: Greater_Sydney_Dam_Levels
         run: Rscript Greater_Sydney_Dam_Levels/damlevel_scrape.R
       
  # Add new files in data folder, commit along with other modified files, push
