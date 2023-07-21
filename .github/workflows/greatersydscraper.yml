@@ -23,7 +23,7 @@ jobs:
         
       - name: Dam level scraper
         working-directory: Greater_Sydney_Dam_Levels # Modify this line to the correct directory path
-        run: Rscript damlevel_scrape.R
+        run: Rscript damlevel_scrape.r
       
       # Add new files in data folder, commit along with other modified files, push
       - name: Commit files
