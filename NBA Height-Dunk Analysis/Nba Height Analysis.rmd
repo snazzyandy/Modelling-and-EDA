@@ -1,6 +1,6 @@
 ---
 title: "NBA Height analysis"
-output: html_document
+output: github_document
 ---
 ## Purpose
 
