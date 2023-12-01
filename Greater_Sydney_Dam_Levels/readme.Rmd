@@ -2,7 +2,7 @@
 title: "readme2.rmd"
 author: "Andrew Turner"
 date: "2023-12-01"
-output: html_document
+output: github_document
 ---
 
 ## Greater Sydney Dam Level Scraper
