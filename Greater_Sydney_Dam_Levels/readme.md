@@ -14,6 +14,13 @@ Percentage_Of_complete_daily_reads
 
 ![](readme_files/figure-gfm/graph-1.png)<!-- -->
 
+``` r
+#Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
+gg_dam_forecast
+```
+
+![](readme_files/figure-gfm/graph%202-1.png)<!-- -->
+
 ## Why Scrape Greater Sydney Dam Levels?
 
 A friend of mine mentioned that WaterNSW updated their website. However,

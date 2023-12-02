@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+library(tidyr)
+library(stringr)
 library(zoo)
 
 ```
@@ -170,7 +172,26 @@ all_readings_df <- all_readings |>
           Estimated_Day_zero_60day_depletion_rate, Estimated_spillover_day_60day_capacity_rate,
           Estimated_Day_zero_90day_depletion_rate, Estimated_spillover_day_90day_capacity_rate,
           Estimated_Day_zero_120day_depletion_rate, Estimated_spillover_day_120day_capacity_rate) |>
-  filter(Collection_Date == end_date)
+  filter(Collection_Date == end_date)|>
+    pivot_longer(cols = starts_with("Estimated"),
+                 names_to = "Forecast Type",
+                 values_to = "Key Date"
+                 ) |>
+    mutate(Forecast_value = case_when(
+      str_detect(`Forecast Type`, "Day_zero") ~ 0,
+      str_detect(`Forecast Type`, "spillover_day") ~ 100,
+      TRUE ~ 500
+    )) |>
+  pivot_longer()
+  
+  #Plot series to show the forecasts by dam
+  gg_dam_forecast <-Yesterdays_Forecast |>
+    ggplot(aes(x= Collection_Date, xend = `Key Date`, y = daily_value))+
+    geom_point()+
+    xlab("Year")+
+    ylim(0,100)+
+    facet_wrap(~Variable, ncol = 2)
+  
   
 ```
 
@@ -179,18 +200,13 @@ all_readings_df <- all_readings |>
 
 Percentage_Of_complete_daily_reads
 
+
+
+```
+
+```{r graph 2, fig.height=15}
 #Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
-
-# Sample data
-date <- seq(as.Date("2016/1/1"), as.Date("2019/1/1"), "4 months")
-values <- rnorm(length(date))
-df <- data.frame(date, values)
-
-# Interpolate values every month
-interpolated_df <- approx(x = df$date, y = df$values, xout = seq(as.Date("2016/1/1"), as.Date("2019/1/1"), "months"))
-
-# Plot the interpolated values
-plot(interpolated_df$x, interpolated_df$y, type = "b")
+gg_dam_forecast
 
 ```
 
