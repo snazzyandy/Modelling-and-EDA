@@ -23,7 +23,7 @@ library(zoo)
 #Global Variables
 #Dataframe for the last week
 start_date <- (date(Sys.Date())-8)
-end_date <- date(Sys.Date())-1  # yesterdays's date
+end_date <- date(Sys.Date())  # yesterdays's date
 
 Last_week <- data.frame(seq(start_date, end_date, "days")) |>
             mutate(Collection_Date= seq.start_date..end_date...days..)
@@ -39,7 +39,17 @@ dams  <- c("Avon Dam",
                       "Warragamba Dam",
                       "Wingecarribee Reservoir",
                       "Woronora Dam"
+
                       )
+#Graph Global variables
+chart_col_count = 2
+
+
+Custom_theme = theme(
+   #legend.key.height = unit(0.5, "cm"),  # Change height
+   #legend.key.width = unit(0.01, "cm"),    # Change width
+   legend.position = "top"
+  ) 
 
 #Data From scraped files
 all_readings <- read.csv("Daily_Dam_Readings_Greater_Sydney.csv") |>                     
@@ -162,7 +172,17 @@ all_readings_df <- all_readings |>
                           mutate(Estimated_spillover_day_60day_capacity_rate = Days_to_full_at_60day_capacity_rate + Collection_Date) |>
                           mutate(Estimated_spillover_day_90day_capacity_rate = Days_to_full_at_90day_capacity_rate + Collection_Date) |>  
                           mutate(Estimated_spillover_day_120day_capacity_rate = Days_to_full_at_120day_capacity_rate + Collection_Date) 
-                    
+
+#Shorten the dataset to join to the chart
+Historic_dataset<- all_readings_df |>
+  filter(Collection_Date != date(Sys.Date())) |>
+  mutate(`Forecast Type` = "Historic Data") |>
+  mutate(`Date Type` = "Historic Data") |>
+  rename(Date = Collection_Date) |> 
+  mutate(Dam_level_range = "Historic Data") |>
+  mutate(Dam_Level_Values = daily_value) |>
+  select(Variable,`Forecast Type`, `Date Type`, Date, Dam_level_range, Dam_Level_Values)
+                  
   #Subset series
   Yesterdays_Forecast <- all_readings_df |>
   select(Variable,Collection_Date, daily_value,
@@ -181,17 +201,43 @@ all_readings_df <- all_readings |>
       str_detect(`Forecast Type`, "Day_zero") ~ 0,
       str_detect(`Forecast Type`, "spillover_day") ~ 100,
       TRUE ~ 500
-    )) |>
-  pivot_longer()
+    ))
   
-  #Plot series to show the forecasts by dam
-  gg_dam_forecast <-Yesterdays_Forecast |>
-    ggplot(aes(x= Collection_Date, xend = `Key Date`, y = daily_value))+
-    geom_point()+
-    xlab("Year")+
+Yesterdays_Forecast_Graph_data <-Yesterdays_Forecast |>
+  pivot_longer(
+    cols = c("Collection_Date", "Key Date"),
+    names_to = "Date Type",
+    values_to = "Date"
+  ) |>
+  pivot_longer(
+    cols = c("daily_value", "Forecast_value"),
+    names_to  = "Dam_level_range",
+    values_to = "Dam_Level_Values"
+  ) |> filter(!is.na(Date)) |> 
+  #The pivot longer matches the permutations - we want to remove them
+    filter(`Date Type` != "Collection_Date" & Dam_level_range == "Forecast_value" |
+           `Date Type` == "Collection_Date" & Dam_level_range == "daily_value" ) |>
+    rbind(Historic_dataset)
+  
+#Plot series to show the forecasts by dam
+  #2025 View
+gg_dam_forecast_30 <-Yesterdays_Forecast_Graph_data |>
+    ggplot(aes(x= Date, y = Dam_Level_Values , colour = `Forecast Type`),)+
+    geom_line()+
+    xlim(c(as.Date("2023-01-01"), as.Date("2030-01-01")))+
     ylim(0,100)+
-    facet_wrap(~Variable, ncol = 2)
-  
+    facet_wrap(~Variable, ncol = chart_col_count)+
+    theme(legend.position = "none")+
+    guides(colour=guide_legend(ncol=1))
+
+gg_dam_forecast_60 <-Yesterdays_Forecast_Graph_data |>
+    ggplot(aes(x= Date, y = Dam_Level_Values , colour = `Forecast Type`),)+
+    geom_line()+
+  xlim(c(as.Date("2023-01-01"), as.Date("2060-01-01")))+
+    ylim(0,100)+
+    facet_wrap(~Variable, ncol = chart_col_count)+
+    Custom_theme+
+    guides(colour=guide_legend(ncol=1))
   
 ```
 
@@ -201,12 +247,12 @@ all_readings_df <- all_readings |>
 Percentage_Of_complete_daily_reads
 
 
-
 ```
 
 ```{r graph 2, fig.height=15}
 #Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
-gg_dam_forecast
+gg_dam_forecast_60
+gg_dam_forecast_30
 
 ```
 

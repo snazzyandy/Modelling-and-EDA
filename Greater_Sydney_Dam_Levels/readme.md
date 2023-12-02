@@ -16,10 +16,18 @@ Percentage_Of_complete_daily_reads
 
 ``` r
 #Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
-gg_dam_forecast
+gg_dam_forecast_60
 ```
 
 ![](readme_files/figure-gfm/graph%202-1.png)<!-- -->
+
+``` r
+gg_dam_forecast_30
+```
+
+    ## Warning: Removed 2 rows containing missing values (`geom_line()`).
+
+![](readme_files/figure-gfm/graph%202-2.png)<!-- -->
 
 ## Why Scrape Greater Sydney Dam Levels?
 
