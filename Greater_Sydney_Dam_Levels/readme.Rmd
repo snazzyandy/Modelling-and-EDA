@@ -23,7 +23,7 @@ library(zoo)
 #Global Variables
 #Dataframe for the last week
 start_date <- (date(Sys.Date())-8)
-end_date <- date(Sys.Date())  # yesterdays's date
+end_date <- date(Sys.Date()-1)  # yesterdays's date
 
 Last_week <- data.frame(seq(start_date, end_date, "days")) |>
             mutate(Collection_Date= seq.start_date..end_date...days..)

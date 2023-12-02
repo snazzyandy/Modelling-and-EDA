@@ -1,6 +1,6 @@
 Todays Greater Sydney Dam Report
 ================
-Last updated on 02 December, 2023
+Last updated on 03 December, 2023
 
 [![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
 
