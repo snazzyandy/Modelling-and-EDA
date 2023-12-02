@@ -23,16 +23,12 @@ jobs:
         working-directory: Greater_Sydney_Dam_Levels # Modify this line to the correct directory path
         run: 
             Rscript damlevel_scrape.r
-            Rscript  'rmarkdown::render("README.Rmd", output_format = "md_document")'
-      
+
       # Add new files in data folder, commit along with other modified files, push
       - name: Commit files
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
-          git add README.md man/figures/README-*
-          git commit -m "Re-build README.md" || echo "No changes to commit"
-          git push origin master || echo "No changes to commit"
           git add Greater_Sydney_Dam_Levels/* # Modify this line to the correct directory path
           git commit -am "GH ACTION Headlines $(date)"
           git push origin main
