@@ -7,16 +7,12 @@ Last updated on 02 December, 2023
 ## What Can we learn from the most recent readings
 
 ``` r
-summary(cars)
+## How has the scraper performed over the last week?
+
+Percentage_Of_complete_daily_reads
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+![](readme_files/figure-gfm/graph-1.png)<!-- -->
 
 ## Why Scrape Greater Sydney Dam Levels?
 

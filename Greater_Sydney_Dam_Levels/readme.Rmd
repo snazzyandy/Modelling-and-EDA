@@ -11,9 +11,187 @@ editor_options:
 ## What Can we learn from the most recent readings
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(zoo)
+
 ```
-```{r cars}
-summary(cars)
+```{r dataprep, include=FALSE}
+#Global Variables
+#Dataframe for the last week
+start_date <- (date(Sys.Date())-8)
+end_date <- date(Sys.Date())-1  # yesterdays's date
+
+Last_week <- data.frame(seq(start_date, end_date, "days")) |>
+            mutate(Collection_Date= seq.start_date..end_date...days..)
+
+dams  <- c("Avon Dam",
+                      "Blue Mountains Dams",
+                      "Cataract Dam",
+                      "Cordeaux Dam",
+                      "Fitzroy Falls Reservoir",
+                      "Nepean Dam",
+                      "Prospect Reservoir",
+                      "Tallowa Dam",
+                      "Warragamba Dam",
+                      "Wingecarribee Reservoir",
+                      "Woronora Dam"
+                      )
+
+#Data From scraped files
+all_readings <- read.csv("Daily_Dam_Readings_Greater_Sydney.csv") |>                     
+                mutate(Collection_Date = date(Collection_Date))
+
+
+#Scraper performance over teh last week
+disinct_readings_count <- all_readings |> 
+                    group_by() |> count(Collection_Date) |>
+                    mutate(`Complete reads` = (n / 14)*100) 
+
+
+#Percentage of complete reads for the last week
+last_week_performance <- Last_week |>
+                       left_join(disinct_readings_count, by="Collection_Date") |> 
+                       mutate(`Complete reads` = case_when(
+                         is.na(`Complete reads`) ~ 0,
+                         TRUE ~ `Complete reads`
+                       ))
+
+Percentage_Of_complete_daily_reads <- ggplot(last_week_performance, aes(Collection_Date, `Complete reads`))+
+                            geom_line()+
+                            ggtitle("Percentage of complete reads over the last week")
+
+
+#Decay rate of dams by day by weekly average
+all_readings_df <- all_readings |>
+                  #Filter the data for the dams
+                    mutate(data_classifier = case_when(
+                      Variable %in% dams ~ "Dams",
+                      TRUE ~ "Summaries"
+                    )) |> 
+  
+                  #Filter for the dams dataset and remove the percentages
+                    filter(data_classifier == "Dams") |>
+                    mutate(daily_value = as.numeric(sub("%", "", daily_value))) |>
+                    group_by(Variable) |> 
+                #Calculate the rate of change by fixed time periods
+                    mutate(daily__volume_change = as.numeric(daily_value) - as.numeric(lag(x= daily_value, n= 1)))|>    
+                    mutate(Avg_Rolling_weekly_volume_change = (as.numeric(daily_value) - as.numeric(rollmean(daily_value, k=7)))/7) |>
+                    mutate(Avg_Rolling_monthly_volume_change = (as.numeric(daily_value) - as.numeric(rollmean(daily_value, k=30)))/30) |> 
+                    mutate(Avg_Rolling_60day_volume_change = (as.numeric(daily_value) - as.numeric(rollmean(daily_value, k=60)))/60) |> 
+                    mutate(Avg_Rolling_90day_volume_change = (as.numeric(daily_value) - as.numeric(rollmean(daily_value, k=90)))/90) |> 
+                    mutate(Avg_Rolling_120day_volume_change = (as.numeric(daily_value) - as.numeric(rollmean(daily_value, k=120)))/120) |> 
+              #Depletion Rates
+                  #Daily rate of change
+                      mutate(Days_to_zero_at_daily_depletion_rate = case_when(
+                        daily__volume_change >= 0 ~ NA,
+                        daily__volume_change < 0 ~ days(round(abs((daily_value / daily__volume_change))))
+                      )) |> 
+                    #weekly depletion rate
+                      mutate(Days_to_zero_at_weekly_depletion_rate = case_when(
+                        Avg_Rolling_weekly_volume_change >= 0 ~ NA,
+                        Avg_Rolling_weekly_volume_change < 0 ~  days(round(abs((daily_value / Avg_Rolling_weekly_volume_change))))
+                      )) |> 
+                    #Monthly depletion rate
+                      mutate(Days_to_zero_at_monthly_depletion_rate = case_when(
+                        Avg_Rolling_monthly_volume_change >= 0 ~ NA,
+                        Avg_Rolling_monthly_volume_change < 0 ~  days(round(abs((daily_value / Avg_Rolling_monthly_volume_change))))
+                      )) |>
+                    #60 Day depletion rate
+                      mutate(Days_to_zero_at_60day_depletion_rate = case_when(
+                        Avg_Rolling_60day_volume_change >= 0 ~ NA,
+                        Avg_Rolling_60day_volume_change < 0 ~  days(round(abs((daily_value / Avg_Rolling_60day_volume_change))))
+                      ))|>
+                    #90 Day depletion rate
+                      mutate(Days_to_zero_at_90day_depletion_rate = case_when(
+                        Avg_Rolling_90day_volume_change >= 0 ~ NA,
+                        Avg_Rolling_90day_volume_change < 0 ~  days(round(abs((daily_value / Avg_Rolling_90day_volume_change))))
+                      )) |>
+                    #120 Day depletion rate
+                      mutate(Days_to_zero_at_120day_depletion_rate = case_when(
+                        Avg_Rolling_120day_volume_change >= 0 ~ NA,
+                        Avg_Rolling_120day_volume_change < 0 ~  days(round(abs((daily_value / Avg_Rolling_120day_volume_change))))
+                      )) |>
+              #Capacity Rates 
+                    #Daily rate of change
+                      mutate(Days_to_full_at_daily_capacity_rate = case_when(
+                        daily__volume_change > 0 ~ days(round(abs(((100-daily_value) / daily__volume_change)))),
+                        daily__volume_change <= 0 ~ NA
+                      )) |>
+                    #weekly rate of change
+                      mutate(Days_to_full_at_weekly_capacity_rate = case_when(
+                        Avg_Rolling_weekly_volume_change > 0 ~ days(round(abs(((100-daily_value) / Avg_Rolling_weekly_volume_change)))),
+                        Avg_Rolling_weekly_volume_change <= 0 ~ NA
+                      )) |>
+                    #Monthly rate of change
+                      mutate(Days_to_full_at_monthly_capacity_rate = case_when(
+                        Avg_Rolling_monthly_volume_change > 0 ~ days(round(abs(((100-daily_value) / Avg_Rolling_monthly_volume_change)))),
+                        Avg_Rolling_monthly_volume_change <= 0 ~ NA
+                      )) |>
+                    #60 Day depletion rate
+                      mutate(Days_to_full_at_60day_capacity_rate = case_when(
+                        Avg_Rolling_60day_volume_change > 0 ~ days(round(abs(((100-daily_value) / Avg_Rolling_60day_volume_change)))),
+                        Avg_Rolling_60day_volume_change <= 0 ~ NA
+                      )) |>  
+                    #90 Day depletion rate
+                      mutate(Days_to_full_at_90day_capacity_rate = case_when(
+                        Avg_Rolling_90day_volume_change > 0 ~ days(round(abs(((100-daily_value) / Avg_Rolling_90day_volume_change)))),
+                        Avg_Rolling_90day_volume_change <= 0 ~ NA
+                      )) |>  
+                    #120 day depletion rate
+                      mutate(Days_to_full_at_120day_capacity_rate = case_when(
+                        Avg_Rolling_120day_volume_change > 0 ~ days(round(abs(((100-daily_value) / Avg_Rolling_120day_volume_change)))),
+                        Avg_Rolling_120day_volume_change <= 0 ~ NA
+                      )) |>
+                  #For each of the 12 dates, what is the forecast date the dam will spill or deplete?
+                      #For Depletion rates;
+                        #daily Depletion rate:
+                          mutate(Estimated_Day_zero_daily_depletion_rate = Days_to_zero_at_daily_depletion_rate + Collection_Date) |>
+                          mutate(Estimated_Day_zero_weekly_depletion_rate = Days_to_zero_at_weekly_depletion_rate + Collection_Date) |>
+                          mutate(Estimated_Day_zero_monthly_depletion_rate = Days_to_zero_at_monthly_depletion_rate + Collection_Date) |>
+                          mutate(Estimated_Day_zero_60day_depletion_rate = Days_to_zero_at_60day_depletion_rate + Collection_Date) |>
+                          mutate(Estimated_Day_zero_90day_depletion_rate = Days_to_zero_at_90day_depletion_rate + Collection_Date) |>
+                          mutate(Estimated_Day_zero_120day_depletion_rate = Days_to_zero_at_120day_depletion_rate + Collection_Date) |>
+                        #Daily capacity rates:
+                          mutate(Estimated_spillover_day_daily_capacity_rate = Days_to_full_at_daily_capacity_rate + Collection_Date) |>
+                          mutate(Estimated_spillover_day_weekly_capacity_rate = Days_to_full_at_weekly_capacity_rate + Collection_Date) |>
+                          mutate(Estimated_spillover_day_monthly_capacity_rate = Days_to_full_at_monthly_capacity_rate + Collection_Date) |>
+                          mutate(Estimated_spillover_day_60day_capacity_rate = Days_to_full_at_60day_capacity_rate + Collection_Date) |>
+                          mutate(Estimated_spillover_day_90day_capacity_rate = Days_to_full_at_90day_capacity_rate + Collection_Date) |>  
+                          mutate(Estimated_spillover_day_120day_capacity_rate = Days_to_full_at_120day_capacity_rate + Collection_Date) 
+                    
+  #Subset series
+  Yesterdays_Forecast <- all_readings_df |>
+  select(Variable,Collection_Date, daily_value,
+          Estimated_Day_zero_daily_depletion_rate, Estimated_spillover_day_daily_capacity_rate,
+          Estimated_Day_zero_weekly_depletion_rate, Estimated_spillover_day_weekly_capacity_rate,
+          Estimated_Day_zero_monthly_depletion_rate, Estimated_spillover_day_monthly_capacity_rate,
+          Estimated_Day_zero_60day_depletion_rate, Estimated_spillover_day_60day_capacity_rate,
+          Estimated_Day_zero_90day_depletion_rate, Estimated_spillover_day_90day_capacity_rate,
+          Estimated_Day_zero_120day_depletion_rate, Estimated_spillover_day_120day_capacity_rate) |>
+  filter(Collection_Date == end_date)
+  
+```
+
+```{r graph}
+## How has the scraper performed over the last week?
+
+Percentage_Of_complete_daily_reads
+
+#Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
+
+# Sample data
+date <- seq(as.Date("2016/1/1"), as.Date("2019/1/1"), "4 months")
+values <- rnorm(length(date))
+df <- data.frame(date, values)
+
+# Interpolate values every month
+interpolated_df <- approx(x = df$date, y = df$values, xout = seq(as.Date("2016/1/1"), as.Date("2019/1/1"), "months"))
+
+# Plot the interpolated values
+plot(interpolated_df$x, interpolated_df$y, type = "b")
+
 ```
 
 ## Why Scrape Greater Sydney Dam Levels?
