@@ -8,6 +8,7 @@ Last updated on 02 December, 2023
 
 ``` r
 ## How has the scraper performed over the last week?
+# Testing next to see if its deployed in the markdown on deploy
 
 Percentage_Of_complete_daily_reads
 ```
@@ -25,7 +26,7 @@ gg_dam_forecast_60
 gg_dam_forecast_30
 ```
 
-    ## Warning: Removed 2 rows containing missing values (`geom_line()`).
+    ## Warning: Removed 15 rows containing missing values (`geom_line()`).
 
 ![](readme_files/figure-gfm/graph%202-2.png)<!-- -->
 
