@@ -32,7 +32,7 @@ jobs:
       - name: Render Readme
         working-directory: Greater_Sydney_Dam_Levels # Modify this line to reference the markdown location
         run: 
-            Rscript -e 'rmarkdown::render("readme.Rmd", output_format = "md_document")'
+            Rscript -e 'rmarkdown::render("readme.Rmd", output_format = "github_document")'
       # Add new files in data folder, commit along with other modified files, push
       - name: Commit scraper
         run: |
