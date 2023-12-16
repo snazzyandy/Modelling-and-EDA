@@ -23,6 +23,7 @@ jobs:
             any::tidyr
             any::stringr
             any::zoo
+            any::lubridate
         
       - name: Dam level scraper
         working-directory: Greater_Sydney_Dam_Levels # Modify this line to the correct directory path
