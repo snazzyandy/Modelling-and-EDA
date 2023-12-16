@@ -7,14 +7,6 @@ editor_options:
     wrap: sentence
 ---
 
-## Welcome to the Greater Sydney Dam Levels Daily Data Scraper
-
-This product is currently:
-
-[![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
-
-## What Can we learn from the most recent readings
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
@@ -287,30 +279,11 @@ gg_dam_forecast_60 <-Yesterdays_Forecast_Graph_data |>
   
 ```
 
-```{r graph}
-## How has the scraper performed over the last week?
-# Testing next to see if its deployed in the markdown on deploy
+This product is currently:
 
-Percentage_Of_complete_daily_reads
+[![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
 
 
-```
-```{r Spillover dates}
-#Based off the most recent estimates we can derive the following dates the dams will reach empty.
-knitr::kable(Yesterdays_day_zeros)
-
-#For those values that are NA, we expect the dam to spill over before they begin depleting again 
-knitr::kable(yesterdays_spillover_days)
-
-```
-
-
-```{r graph 2, fig.height=15}
-#Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
-gg_dam_forecast_60
-gg_dam_forecast_30
-
-```
 
 ## Why Scrape Greater Sydney Dam Levels?
 
@@ -334,3 +307,47 @@ For those looking for longitudinal data this is very useful!
 
 All these daily data extracts are available in the data folder.
 Open sourcing (MIT Licence) for those who are interested #OpenData!
+
+## How has this product been performing
+
+```{r graph}
+## How has the scraper performed over the last week?
+# Testing next to see if its deployed in the markdown on deploy
+
+
+
+Percentage_Of_complete_daily_reads
+
+
+```
+## What is the key inference from this data
+
+Collecting daily data allows us to produce more granular rolling average estimates. These averages trend either upwards or downwards.
+When dam levels trend towards 100% it means we are approaching 'Spillover Day'. Spillover day means that any addtional water introduced to this dam will be redirected to either the floodgates or the spillway that connects to local rivers or communities.
+
+Inversely, when dam levels are trending downwards it means storage capacity is reaching zero. This means that the communities that are serviced by the dam are more likely to suffer drought restrictions and water utilities will have to treat more turbid water due to higher sediment levels at the bottom of these dams.
+It is highly unlikely that these dams will actually reach zero as government intervention requires the construction of desalination to artifically reduce this depletion rate - a method that was highly effective in the 2016 and 2020 droughts - however that is outside of the scope of this tool. 
+
+Using the current storage level and the rolling averages sampled at 1,7,30,60,90 and 120 days can estimate the "Spillover" and "Day Zero" days based off the most recent data.
+
+```{r Spillover dates}
+#Based off yesterdays reading we estimate the following day zeros
+
+knitr::kable(Yesterdays_day_zeros)
+
+#Based off yesterdays reading we estimate the folling spill over days
+knitr::kable(yesterdays_spillover_days)
+
+```
+
+
+```{r graph 2, fig.height=15}
+# We can also visualize the spillover/day zero estimates using trend charts out to 2060 and 2030.
+# As the lines converge, there is more mean reversion between the current depletion rate and the future rate
+# As the lines diverge, it is more likely the recent data is an outlier to the historical average
+# Note the most recent severe droughts had a 13% and 20% system depletion rate estimating the system runs out of water by 7.7 and 5 years respectively.
+
+gg_dam_forecast_60
+gg_dam_forecast_30
+
+```
