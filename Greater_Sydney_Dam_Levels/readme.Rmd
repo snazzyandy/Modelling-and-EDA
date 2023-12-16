@@ -250,6 +250,20 @@ Yesterdays_Forecast_Graph_data <-Yesterdays_Forecast |>
   mutate(`Forecast Type` = factor(`Forecast Type`))# |>
 #  mutate(`Forecast Type` = fct_recode(`Forecast Type`, Forecast_levels))
 
+Yesterdays_day_zeros <- Yesterdays_Forecast_Graph_data |>
+  filter(`Date Type` == "Key Date") |> select(Variable, `Forecast Type`, Date) |>
+  pivot_wider(names_from = `Forecast Type`, values_from = Date) |>
+  select(Variable, Estimated_Day_zero_daily_depletion_rate, Estimated_Day_zero_weekly_depletion_rate,
+         Estimated_Day_zero_monthly_depletion_rate, Estimated_Day_zero_60day_depletion_rate,
+         Estimated_Day_zero_90day_depletion_rate, Estimated_Day_zero_120day_depletion_rate)
+
+yesterdays_spillover_days <- Yesterdays_Forecast_Graph_data |>
+  filter(`Date Type` == "Key Date") |> select(Variable, `Forecast Type`, Date) |>
+  pivot_wider(names_from = `Forecast Type`, values_from = Date) |>
+  select(Variable, Estimated_spillover_day_daily_capacity_rate,
+         Estimated_spillover_day_weekly_capacity_rate, Estimated_spillover_day_60day_capacity_rate,
+         Estimated_spillover_day_90day_capacity_rate, Estimated_spillover_day_120day_capacity_rate)
+
   
 #Plot series to show the forecasts by dam
   #2025 View
@@ -281,6 +295,15 @@ Percentage_Of_complete_daily_reads
 
 
 ```
+```{r Spillover dates}
+#Based off the most recent estimates we can derive the following dates the dams will reach empty.
+knitr::kable(Yesterdays_day_zeros)
+
+#For those values that are NA, we expect the dam to spill over before they begin depleting again 
+knitr::kable(yesterdays_spillover_days)
+
+```
+
 
 ```{r graph 2, fig.height=15}
 #Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
