@@ -6,7 +6,13 @@ editor_options:
   markdown: 
     wrap: sentence
 ---
+## Welcome to the Greater Sydney Dam Levels Daily Data Scraper
+
+This product is currently:
+
 [![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
+
+
 
 ## What Can we learn from the most recent readings
 ```{r setup, include=FALSE}
@@ -50,6 +56,27 @@ Custom_theme = theme(
    #legend.key.width = unit(0.01, "cm"),    # Change width
    legend.position = "top"
   ) 
+
+#For the forecast day zeros and spillover days a colour grading for each
+#A
+forecast_colour_grading <- c(
+  "#3c9c00", "#749200", "#a08300", "#c66e00", "#e74e00", "#ff1235"
+)
+
+Forecast_levels    <-   c("Estimated_Day_zero_daily_depletion_rate", 
+                    "Estimated_spillover_day_daily_capacity_rate",
+                    "Estimated_Day_zero_weekly_depletion_rate", 
+                    "Estimated_spillover_day_weekly_capacity_rate",
+                    "Estimated_Day_zero_monthly_depletion_rate", 
+                    "Estimated_spillover_day_monthly_capacity_rate",
+                    "Estimated_Day_zero_60day_depletion_rate", 
+                    "Estimated_spillover_day_60day_capacity_rate",
+                    "Estimated_Day_zero_90day_depletion_rate", 
+                    "Estimated_spillover_day_90day_capacity_rate",
+                    "Estimated_Day_zero_120day_depletion_rate", 
+                    "Estimated_spillover_day_120day_capacity_rate", 
+                    "Historic Data")
+
 
 #Data From scraped files
 all_readings <- read.csv("Daily_Dam_Readings_Greater_Sydney.csv") |>                     
@@ -217,7 +244,11 @@ Yesterdays_Forecast_Graph_data <-Yesterdays_Forecast |>
   #The pivot longer matches the permutations - we want to remove them
     filter(`Date Type` != "Collection_Date" & Dam_level_range == "Forecast_value" |
            `Date Type` == "Collection_Date" & Dam_level_range == "daily_value" ) |>
-    rbind(Historic_dataset)
+    rbind(Historic_dataset) |>
+  #Adding levels so that i can match the colours in the charts
+  mutate(`Forecast Type` = factor(`Forecast Type`)) |>
+  mutate(`Forecast Type` = fct_recode(`Forecast Type`, Forecast_levels))
+
   
 #Plot series to show the forecasts by dam
   #2025 View
