@@ -1,3 +1,8 @@
+Welcome to the Greater Sydney Dam Levels Daily Data Scraper
+-----------------------------------------------------------
+
+This product is currently:
+
 [![damlevel\_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
 
 What Can we learn from the most recent readings
@@ -17,7 +22,7 @@ What Can we learn from the most recent readings
 
     gg_dam_forecast_30
 
-    ## Warning: Removed 3 rows containing missing values (`geom_line()`).
+    ## Warning: Removed 2 rows containing missing values (`geom_line()`).
 
 ![](readme_files/figure-markdown_strict/graph%202-2.png)
 
