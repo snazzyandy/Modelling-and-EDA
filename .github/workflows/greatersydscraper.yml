@@ -1,8 +1,7 @@
 name: damlevel_scrape.r
 # Controls when the action will run.
 on:
-    schedule:
-    - cron:  '0 07 * * *'
+    push:
 jobs:
   import-data:
     runs-on: ubuntu-latest
@@ -24,15 +23,21 @@ jobs:
         working-directory: Greater_Sydney_Dam_Levels # Modify this line to the correct directory path
         run: 
             Rscript damlevel_scrape.r
-
+      - name: Render Readme
+        run: 
+            Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
       # Add new files in data folder, commit along with other modified files, push
-      - name: Commit files
+      - name: Commit scraper
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
           git add Greater_Sydney_Dam_Levels/* # Modify this line to the correct directory path
           git commit -am "GH ACTION Headlines $(date)"
           git push origin main
+      - name : Commit Readme
+        run: |
+          git commit README.md -m 'Re-build README.Rmd' || echo "No changes to commit"
+          git push origin || echo "No changes to commit" 
         env:
           REPO_KEY: ${{secrets.GITHUB_TOKEN}}
           username: github-actions
