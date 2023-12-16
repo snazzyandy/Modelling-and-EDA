@@ -39,36 +39,41 @@ sourcing (MIT Licence) for those who are interested \#OpenData\!
 
 ``` r
 ## How has the scraper performed over the last week?
-# Testing next to see if its deployed in the markdown on deploy
-
-
 
 Percentage_Of_complete_daily_reads
 ```
 
-![](readme_files/figure-gfm/graph-1.png)<!-- --> \#\# What is the key
-inference from this data
+![](readme_files/figure-gfm/graph-1.png)<!-- -->
+
+## What are the key inferences we can derive from this data
 
 Collecting daily data allows us to produce more granular rolling average
-estimates. These averages trend either upwards or downwards. When dam
-levels trend towards 100% it means we are approaching ‘Spillover Day’.
-Spillover day means that any addtional water introduced to this dam will
-be redirected to either the floodgates or the spillway that connects to
-local rivers or communities.
+estimates. These averages trend either upwards or downwards.
 
-Inversely, when dam levels are trending downwards it means storage
-capacity is reaching zero. This means that the communities that are
+When dam levels trend towards 100% it means we are approaching
+‘Spillover Day’. Spillover day means that any additional water
+introduced to this dam will be redirected to either the floodgates or
+the spillway that connects to local rivers or communities.
+
+Inversely, when dam levels are trending downwards 0% it means we are
+approaching “Day Zero”. This means that the communities that are
 serviced by the dam are more likely to suffer drought restrictions and
 water utilities will have to treat more turbid water due to higher
-sediment levels at the bottom of these dams. It is highly unlikely that
-these dams will actually reach zero as government intervention requires
-the construction of desalination to artifically reduce this depletion
-rate - a method that was highly effective in the 2016 and 2020 droughts
-- however that is outside of the scope of this tool.
+sediment levels at the bottom of these dams. While it is highly unlikely
+that these dams will actually reach zero as government intervention
+requires the construction of desalination to intervene in the depletion
+rate this estimate speaks to how soon these events may happen based off
+the latest data.
 
 Using the current storage level and the rolling averages sampled at
 1,7,30,60,90 and 120 days can estimate the “Spillover” and “Day Zero”
-days based off the most recent data.
+days based off a range of rolling averages. Users worried about drought
+should focus on the 7 and 30 day forecasts as measures of the severity
+of recent conditions. Users can also take solace knowing there is a
+degree of mean reversion via the 90 and 120 day averages.
+
+As this scraper becomes more rich longer rolling averages may be
+introduced.
 
 ``` r
 #Based off yesterdays reading we estimate the following day zeros
@@ -78,17 +83,17 @@ knitr::kable(Yesterdays_day_zeros)
 
 | Variable                | Estimated\_Day\_zero\_daily\_depletion\_rate | Estimated\_Day\_zero\_weekly\_depletion\_rate | Estimated\_Day\_zero\_monthly\_depletion\_rate | Estimated\_Day\_zero\_60day\_depletion\_rate | Estimated\_Day\_zero\_90day\_depletion\_rate | Estimated\_Day\_zero\_120day\_depletion\_rate |
 | :---------------------- | :------------------------------------------- | :-------------------------------------------- | :--------------------------------------------- | :------------------------------------------- | :------------------------------------------- | :-------------------------------------------- |
-| Avon Dam                | NA                                           | 2024-03-14                                    | 2025-06-13                                     | 2033-06-10                                   | 2031-01-04                                   | 2033-06-21                                    |
+| Avon Dam                | NA                                           | NA                                            | 2025-06-04                                     | 2033-02-05                                   | 2030-09-24                                   | 2047-02-16                                    |
 | Blue Mountains Dams     | NA                                           | NA                                            | NA                                             | NA                                           | NA                                           | NA                                            |
 | Cataract Dam            | NA                                           | NA                                            | NA                                             | NA                                           | NA                                           | NA                                            |
-| Cordeaux Dam            | NA                                           | 2024-01-09                                    | 2024-05-15                                     | 2026-07-28                                   | 2025-11-26                                   | 2026-06-29                                    |
-| Fitzroy Falls Reservoir | 2024-01-16                                   | 2024-08-08                                    | 2024-06-15                                     | 2026-04-16                                   | 2026-04-19                                   | 2027-12-10                                    |
-| Nepean Dam              | NA                                           | 2024-05-10                                    | 2029-11-13                                     | NA                                           | 2061-02-01                                   | 2112-08-30                                    |
-| Prospect Reservoir      | NA                                           | 2024-05-17                                    | 2025-06-29                                     | NA                                           | 2116-11-20                                   | 2043-07-22                                    |
+| Cordeaux Dam            | NA                                           | NA                                            | 2024-05-12                                     | 2026-06-27                                   | 2025-10-27                                   | 2029-08-25                                    |
+| Fitzroy Falls Reservoir | 2024-01-16                                   | NA                                            | 2024-06-18                                     | 2026-03-22                                   | 2026-04-19                                   | 2028-10-28                                    |
+| Nepean Dam              | NA                                           | NA                                            | 2029-11-13                                     | NA                                           | 2054-01-30                                   | NA                                            |
+| Prospect Reservoir      | NA                                           | 2025-12-03                                    | 2025-06-29                                     | NA                                           | 2089-01-02                                   | 2129-02-02                                    |
 | Tallowa Dam             | NA                                           | NA                                            | NA                                             | NA                                           | NA                                           | NA                                            |
-| Warragamba Dam          | 2024-03-15                                   | 2024-04-20                                    | 2025-11-26                                     | 2029-09-28                                   | 2030-11-21                                   | 2033-06-12                                    |
-| Wingecarribee Reservoir | NA                                           | 2024-02-06                                    | 2024-09-20                                     | 2028-03-20                                   | 2027-06-01                                   | 2028-12-07                                    |
-| Woronora Dam            | NA                                           | 2024-03-13                                    | 2025-05-05                                     | 2029-09-22                                   | 2029-09-28                                   | 2031-07-14                                    |
+| Warragamba Dam          | 2024-03-15                                   | NA                                            | 2025-11-20                                     | 2029-09-01                                   | 2030-10-01                                   | 2038-07-16                                    |
+| Wingecarribee Reservoir | NA                                           | NA                                            | 2024-09-17                                     | 2028-01-17                                   | 2027-04-18                                   | 2034-04-27                                    |
+| Woronora Dam            | NA                                           | NA                                            | 2025-04-29                                     | 2029-08-26                                   | 2029-07-30                                   | 2036-11-25                                    |
 
 ``` r
 #Based off yesterdays reading we estimate the folling spill over days
@@ -98,13 +103,13 @@ knitr::kable(yesterdays_spillover_days)
 | Variable                | Estimated\_spillover\_day\_daily\_capacity\_rate | Estimated\_spillover\_day\_weekly\_capacity\_rate | Estimated\_spillover\_day\_60day\_capacity\_rate | Estimated\_spillover\_day\_90day\_capacity\_rate | Estimated\_spillover\_day\_120day\_capacity\_rate |
 | :---------------------- | :----------------------------------------------- | :------------------------------------------------ | :----------------------------------------------- | :----------------------------------------------- | :------------------------------------------------ |
 | Avon Dam                | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
-| Blue Mountains Dams     | NA                                               | 2024-01-10                                        | 2029-09-14                                       | 2030-04-16                                       | 2027-11-24                                        |
-| Cataract Dam            | NA                                               | 2024-07-26                                        | 2026-08-26                                       | 2028-06-01                                       | 2031-03-16                                        |
+| Blue Mountains Dams     | NA                                               | NA                                                | 2030-07-11                                       | 2030-01-16                                       | 2058-06-14                                        |
+| Cataract Dam            | NA                                               | NA                                                | 2026-08-09                                       | 2028-07-13                                       | 2034-03-18                                        |
 | Cordeaux Dam            | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
-| Fitzroy Falls Reservoir | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
-| Nepean Dam              | NA                                               | NA                                                | 2040-03-09                                       | NA                                               | NA                                                |
-| Prospect Reservoir      | 2023-12-27                                       | NA                                                | 2024-12-18                                       | NA                                               | NA                                                |
-| Tallowa Dam             | NA                                               | 2023-12-15                                        | 2023-12-15                                       | 2023-12-15                                       | 2023-12-15                                        |
+| Fitzroy Falls Reservoir | NA                                               | 2024-02-29                                        | NA                                               | NA                                               | NA                                                |
+| Nepean Dam              | NA                                               | NA                                                | 2045-03-08                                       | NA                                               | 2042-01-19                                        |
+| Prospect Reservoir      | 2023-12-27                                       | NA                                                | 2024-12-09                                       | NA                                               | NA                                                |
+| Tallowa Dam             | NA                                               | NA                                                | 2023-12-15                                       | 2023-12-15                                       | 2023-12-15                                        |
 | Warragamba Dam          | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
 | Wingecarribee Reservoir | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
 | Woronora Dam            | NA                                               | NA                                                | NA                                               | NA                                               | NA                                                |
