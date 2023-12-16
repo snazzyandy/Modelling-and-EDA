@@ -1,14 +1,9 @@
-Todays Greater Sydney Dam Report
-================
-Last updated on 16 December, 2023
-
-## Welcome to the Greater Sydney Dam Levels Daily Data Scraper
-
 This product is currently:
 
-[![damlevel_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
+[![damlevel\_scrape.r](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml/badge.svg)](https://github.com/snazzyandy/Modelling-and-EDA/actions/workflows/greatersydscraper.yml)
 
-## Why Scrape Greater Sydney Dam Levels?
+Why Scrape Greater Sydney Dam Levels?
+-------------------------------------
 
 A friend of mine mentioned that WaterNSW updated their website. However,
 like with most web facelifts, the websites’s functionality took a hit.
@@ -24,7 +19,8 @@ The data we are borrowing is from [this page on Water NSW’s
 site](https://www.waternsw.com.au/nsw-dams/nsw-storage-levels/greater-sydney-dam-levels)!
 ![Image](Images/WNSWScreenshot.png)
 
-## Why Not use water insights?
+Why Not use water insights?
+---------------------------
 
 [The WNSW app Water
 insights](https://waterinsights.waternsw.com.au/12964-sydney-drinking-water-catchment/#!)
@@ -32,75 +28,299 @@ is a great product for most users but doesnt solve my daily data point
 query. Instead it offers weekly, monthly and yearly data series. For
 those looking for longitudinal data this is very useful!
 
-## Where can i access the data?
+Where can i access the data?
+----------------------------
 
 All these daily data extracts are available in the data folder. Open
 sourcing (MIT Licence) for those who are interested \#OpenData!
 
-## What Can we learn from the most recent readings
+How has this product been performing
+------------------------------------
 
-``` r
-## How has the scraper performed over the last week?
-# Testing next to see if its deployed in the markdown on deploy
+    ## How has the scraper performed over the last week?
+    # Testing next to see if its deployed in the markdown on deploy
 
 
 
-Percentage_Of_complete_daily_reads
-```
+    Percentage_Of_complete_daily_reads
 
-![](readme_files/figure-gfm/graph-1.png)<!-- -->
+![](readme_files/figure-markdown_strict/graph-1.png) \#\# What is the
+key inference from this data
 
-``` r
-#Based off the most recent estimates we can derive the following dates the dams will reach empty.
-#We do this using a very basic rolling average depletion rate 
+Collecting daily data allows us to produce more granular rolling average
+estimates. These averages trend either upwards or downwards. When dam
+levels trend towards 100% it means we are approaching ‘Spillover Day’.
+Spillover day means that any addtional water introduced to this dam will
+be redirected to either the floodgates or the spillway that connects to
+local rivers or communities.
 
-knitr::kable(Yesterdays_day_zeros)
-```
+Inversely, when dam levels are trending downwards it means storage
+capacity is reaching zero. This means that the communities that are
+serviced by the dam are more likely to suffer drought restrictions and
+water utilities will have to treat more turbid water due to higher
+sediment levels at the bottom of these dams. It is highly unlikely that
+these dams will actually reach zero as government intervention requires
+the construction of desalination to artifically reduce this depletion
+rate - a method that was highly effective in the 2016 and 2020 droughts
+- however that is outside of the scope of this tool.
 
-| Variable                | Estimated_Day_zero_daily_depletion_rate | Estimated_Day_zero_weekly_depletion_rate | Estimated_Day_zero_monthly_depletion_rate | Estimated_Day_zero_60day_depletion_rate | Estimated_Day_zero_90day_depletion_rate | Estimated_Day_zero_120day_depletion_rate |
-|:------------------------|:----------------------------------------|:-----------------------------------------|:------------------------------------------|:----------------------------------------|:----------------------------------------|:-----------------------------------------|
-| Avon Dam                | NA                                      | 2024-03-14                               | 2025-06-30                                | 2034-03-18                              | 2031-08-24                              | 2035-07-01                               |
-| Blue Mountains Dams     | NA                                      | NA                                       | NA                                        | NA                                      | NA                                      | NA                                       |
-| Cataract Dam            | NA                                      | NA                                       | NA                                        | NA                                      | NA                                      | NA                                       |
-| Cordeaux Dam            | NA                                      | 2024-01-09                               | 2024-05-20                                | 2026-10-04                              | 2026-01-31                              | 2026-12-05                               |
-| Fitzroy Falls Reservoir | 2024-01-16                              | 2025-01-04                               | 2024-06-15                                | 2026-06-02                              | 2026-05-07                              | 2028-01-01                               |
-| Nepean Dam              | NA                                      | 2024-05-23                               | 2029-11-13                                | NA                                      | 2087-10-28                              | NA                                       |
-| Prospect Reservoir      | NA                                      | 2024-05-17                               | 2025-06-29                                | NA                                      | 2145-12-05                              | 2044-11-08                               |
-| Tallowa Dam             | NA                                      | NA                                       | NA                                        | NA                                      | NA                                      | NA                                       |
-| Warragamba Dam          | 2024-03-15                              | 2024-04-20                               | 2025-12-09                                | 2029-11-23                              | 2031-03-10                              | 2034-07-15                               |
-| Wingecarribee Reservoir | NA                                      | 2024-02-06                               | 2024-09-26                                | 2028-08-12                              | 2027-09-14                              | 2029-12-03                               |
-| Woronora Dam            | NA                                      | 2024-03-13                               | 2025-05-18                                | 2029-11-18                              | 2030-01-31                              | 2032-05-29                               |
+Using the current storage level and the rolling averages sampled at
+1,7,30,60,90 and 120 days can estimate the “Spillover” and “Day Zero”
+days based off the most recent data.
 
-``` r
-#For those values that are NA, we expect the dam to spill over before they begin depleting again 
-knitr::kable(yesterdays_spillover_days)
-```
+    #Based off yesterdays reading we estimate the following day zeros
 
-| Variable                | Estimated_spillover_day_daily_capacity_rate | Estimated_spillover_day_weekly_capacity_rate | Estimated_spillover_day_60day_capacity_rate | Estimated_spillover_day_90day_capacity_rate | Estimated_spillover_day_120day_capacity_rate |
-|:------------------------|:--------------------------------------------|:---------------------------------------------|:--------------------------------------------|:--------------------------------------------|:---------------------------------------------|
-| Avon Dam                | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
-| Blue Mountains Dams     | NA                                          | 2024-01-07                                   | 2028-07-21                                  | 2031-05-07                                  | 2028-09-17                                   |
-| Cataract Dam            | NA                                          | 2024-07-26                                   | 2026-09-29                                  | 2028-07-03                                  | 2031-07-22                                   |
-| Cordeaux Dam            | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
-| Fitzroy Falls Reservoir | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
-| Nepean Dam              | NA                                          | NA                                           | 2034-12-29                                  | NA                                          | 2088-11-21                                   |
-| Prospect Reservoir      | 2023-12-27                                  | NA                                           | 2025-01-14                                  | NA                                          | NA                                           |
-| Tallowa Dam             | NA                                          | 2023-12-15                                   | 2023-12-15                                  | 2023-12-15                                  | 2023-12-15                                   |
-| Warragamba Dam          | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
-| Wingecarribee Reservoir | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
-| Woronora Dam            | NA                                          | NA                                           | NA                                          | NA                                          | NA                                           |
+    knitr::kable(Yesterdays_day_zeros)
 
-``` r
-#Based on a 120 day rolling average what date is warragamba likely to overflow or hit zero.
-gg_dam_forecast_60
-```
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Estimated_Day_zero_daily_depletion_rate</th>
+<th style="text-align: left;">Estimated_Day_zero_weekly_depletion_rate</th>
+<th style="text-align: left;">Estimated_Day_zero_monthly_depletion_rate</th>
+<th style="text-align: left;">Estimated_Day_zero_60day_depletion_rate</th>
+<th style="text-align: left;">Estimated_Day_zero_90day_depletion_rate</th>
+<th style="text-align: left;">Estimated_Day_zero_120day_depletion_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Avon Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-03-14</td>
+<td style="text-align: left;">2025-06-21</td>
+<td style="text-align: left;">2033-10-23</td>
+<td style="text-align: left;">2031-04-25</td>
+<td style="text-align: left;">2034-05-21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blue Mountains Dams</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cataract Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cordeaux Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-01-09</td>
+<td style="text-align: left;">2024-05-18</td>
+<td style="text-align: left;">2026-08-30</td>
+<td style="text-align: left;">2025-12-27</td>
+<td style="text-align: left;">2026-09-10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fitzroy Falls Reservoir</td>
+<td style="text-align: left;">2024-01-16</td>
+<td style="text-align: left;">2024-09-21</td>
+<td style="text-align: left;">2024-06-14</td>
+<td style="text-align: left;">2026-05-09</td>
+<td style="text-align: left;">2026-04-28</td>
+<td style="text-align: left;">2027-12-22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nepean Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-05-16</td>
+<td style="text-align: left;">2029-11-13</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2072-05-04</td>
+<td style="text-align: left;">2429-06-23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Prospect Reservoir</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-05-17</td>
+<td style="text-align: left;">2025-06-29</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2145-12-05</td>
+<td style="text-align: left;">2043-09-01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tallowa Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Warragamba Dam</td>
+<td style="text-align: left;">2024-03-15</td>
+<td style="text-align: left;">2024-04-20</td>
+<td style="text-align: left;">2025-12-02</td>
+<td style="text-align: left;">2029-10-25</td>
+<td style="text-align: left;">2031-01-13</td>
+<td style="text-align: left;">2033-12-12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wingecarribee Reservoir</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-02-06</td>
+<td style="text-align: left;">2024-09-23</td>
+<td style="text-align: left;">2028-05-29</td>
+<td style="text-align: left;">2027-07-18</td>
+<td style="text-align: left;">2029-05-20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Woronora Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-03-13</td>
+<td style="text-align: left;">2025-05-11</td>
+<td style="text-align: left;">2029-10-20</td>
+<td style="text-align: left;">2029-11-24</td>
+<td style="text-align: left;">2031-12-12</td>
+</tr>
+</tbody>
+</table>
 
-![](readme_files/figure-gfm/graph%202-1.png)<!-- -->
+    #Based off yesterdays reading we estimate the folling spill over days
+    knitr::kable(yesterdays_spillover_days)
 
-``` r
-gg_dam_forecast_30
-```
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 17%" />
+<col style="width: 18%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Estimated_spillover_day_daily_capacity_rate</th>
+<th style="text-align: left;">Estimated_spillover_day_weekly_capacity_rate</th>
+<th style="text-align: left;">Estimated_spillover_day_60day_capacity_rate</th>
+<th style="text-align: left;">Estimated_spillover_day_90day_capacity_rate</th>
+<th style="text-align: left;">Estimated_spillover_day_120day_capacity_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Avon Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blue Mountains Dams</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-01-08</td>
+<td style="text-align: left;">2029-01-24</td>
+<td style="text-align: left;">2030-09-14</td>
+<td style="text-align: left;">2028-03-02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cataract Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-07-26</td>
+<td style="text-align: left;">2026-09-12</td>
+<td style="text-align: left;">2028-06-12</td>
+<td style="text-align: left;">2031-05-18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cordeaux Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fitzroy Falls Reservoir</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nepean Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2037-02-04</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Prospect Reservoir</td>
+<td style="text-align: left;">2023-12-27</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-12-31</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tallowa Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2023-12-15</td>
+<td style="text-align: left;">2023-12-15</td>
+<td style="text-align: left;">2023-12-15</td>
+<td style="text-align: left;">2023-12-15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Warragamba Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wingecarribee Reservoir</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Woronora Dam</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
 
-    ## Warning: Removed 2 rows containing missing values (`geom_line()`).
+    # We can also visualize the spillover/day zero estimates using trend charts out to 2060 and 2030.
+    # As the lines converge, there is more mean reversion between the current depletion rate and the future rate
+    # As the lines diverge, it is more likely the recent data is an outlier to the historical average
+    # Note the most recent severe droughts had a 13% and 20% system depletion rate estimating the system runs out of water by 7.7 and 5 years respectively.
 
-![](readme_files/figure-gfm/graph%202-2.png)<!-- -->
+    gg_dam_forecast_60
+
+![](readme_files/figure-markdown_strict/graph%202-1.png)
+
+    gg_dam_forecast_30
+
+    ## Warning: Removed 1 row containing missing values (`geom_line()`).
+
+![](readme_files/figure-markdown_strict/graph%202-2.png)
