@@ -312,23 +312,26 @@ Open sourcing (MIT Licence) for those who are interested #OpenData!
 
 ```{r graph}
 ## How has the scraper performed over the last week?
-# Testing next to see if its deployed in the markdown on deploy
-
-
 
 Percentage_Of_complete_daily_reads
-
-
 ```
-## What is the key inference from this data
+
+## What are the key inferences we can derive from this data
 
 Collecting daily data allows us to produce more granular rolling average estimates. These averages trend either upwards or downwards.
-When dam levels trend towards 100% it means we are approaching 'Spillover Day'. Spillover day means that any addtional water introduced to this dam will be redirected to either the floodgates or the spillway that connects to local rivers or communities.
 
-Inversely, when dam levels are trending downwards it means storage capacity is reaching zero. This means that the communities that are serviced by the dam are more likely to suffer drought restrictions and water utilities will have to treat more turbid water due to higher sediment levels at the bottom of these dams.
-It is highly unlikely that these dams will actually reach zero as government intervention requires the construction of desalination to artifically reduce this depletion rate - a method that was highly effective in the 2016 and 2020 droughts - however that is outside of the scope of this tool. 
+When dam levels trend towards 100% it means we are approaching 'Spillover Day'. 
+Spillover day means that any additional water introduced to this dam will be redirected to either the floodgates or the spillway that connects to local rivers or communities.
 
-Using the current storage level and the rolling averages sampled at 1,7,30,60,90 and 120 days can estimate the "Spillover" and "Day Zero" days based off the most recent data.
+Inversely, when dam levels are trending downwards 0% it means we are approaching "Day Zero". 
+This means that the communities that are serviced by the dam are more likely to suffer drought restrictions and water utilities will have to treat more turbid water due to higher sediment levels at the bottom of these dams.
+While it is highly unlikely that these dams will actually reach zero as government intervention requires the construction of desalination to intervene in the depletion rate this estimate speaks to how soon these events may happen based off the latest data.
+
+Using the current storage level and the rolling averages sampled at 1,7,30,60,90 and 120 days can estimate the "Spillover" and "Day Zero" days based off a range of rolling averages. Users worried about drought should focus on the 7 and 30 day forecasts as measures of the severity of recent conditions.
+Users can also take solace knowing there is a degree of mean reversion via the 90 and 120 day averages.
+
+As this scraper becomes more rich longer rolling averages may be introduced.
+
 
 ```{r Spillover dates}
 #Based off yesterdays reading we estimate the following day zeros
