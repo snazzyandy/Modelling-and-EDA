@@ -40,6 +40,12 @@ dams  <- c("Avon Dam",
                       "Woronora Dam"
 
                       )
+
+dams_capacity <- data.frame(
+  `Dam Name` = dams,
+  capacity = c(142230, 2890,97190,93790,9950,67730,33330,7500,2064680,29880,69536)
+) |> arrange(desc(capacity)) |> rename(`Water Capacity (In Millions of litres)` = capacity)
+
 #Graph Global variables
 chart_col_count = 2
 
@@ -327,8 +333,9 @@ Inversely, when dam levels are trending downwards 0% it means we are approaching
 This means that the communities that are serviced by the dam are more likely to suffer drought restrictions and water utilities will have to treat more turbid water due to higher sediment levels at the bottom of these dams.
 While it is highly unlikely that these dams will actually reach zero as government intervention requires the construction of desalination to intervene in the depletion rate this estimate speaks to how soon these events may happen based off the latest data.
 
-Using the current storage level and the rolling averages sampled at 1,7,30,60,90 and 120 days can estimate the "Spillover" and "Day Zero" days based off a range of rolling averages. Users worried about drought should focus on the 7 and 30 day forecasts as measures of the severity of recent conditions.
-Users can also take solace knowing there is a degree of mean reversion via the 90 and 120 day averages.
+Using the current storage level and the rolling averages sampled at 1,7,30,60,90 and 120 days can estimate the "Spillover" and "Day Zero" days using a range of rolling average estimates. 
+Users worried about drought should focus on the 7 and 30 day forecasts as they imply the most recent rate of decay.
+Users can also take solace knowing there is a degree of mean reversion when it comes to dams. Looking at the 90 and 120 day averages speak to a more conservative estimate.
 
 As this scraper becomes more rich longer rolling averages may be introduced.
 
@@ -352,5 +359,19 @@ knitr::kable(yesterdays_spillover_days)
 
 gg_dam_forecast_60
 gg_dam_forecast_30
+
+```
+
+# Not all dams were created equal.
+
+The graphic front loaded to this tool shows that capacities of each of these dams are different.
+Policy makers therefore tend to hawk over Warragamba dam levels data points rather than the wider range as it dwarfs all other dams in this system.
+An important side note is this 7500mL figure used for Tallowa dam refers to the amount Tallowa contributes to the wider system as part of the "Shoalhaven transfer scheme". 
+Tallowa dam has an actual storage capacity of around 90,000ML
+
+```{r Dam capacity table}
+
+knitr::kable(dams_capacity)
+
 
 ```
