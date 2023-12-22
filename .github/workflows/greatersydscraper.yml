@@ -1,8 +1,7 @@
 name: damlevel_scrape.r
 # Controls when the action will run.
 on:
-    schedule:
-    - cron:  '0 07 * * *'
+    push:
 jobs:
   import-data:
     runs-on: ubuntu-latest
