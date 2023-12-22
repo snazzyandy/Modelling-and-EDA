@@ -78,9 +78,8 @@ Forecast_levels    <-   c("Estimated_Day_zero_daily_depletion_rate",
 
 
 #Data From scraped files
-all_readings <- read.csv("Daily_Dam_Readings_Greater_Sydney.csv") |>                     
-                mutate(Collection_Date = date(Collection_Date))
-
+all_readings <- read.csv("Daily_Dam_Readings_Greater_Sydney.csv") 
+#removed mutate collection date
 
 #Scraper performance over teh last week
 disinct_readings_count <- all_readings |> 
